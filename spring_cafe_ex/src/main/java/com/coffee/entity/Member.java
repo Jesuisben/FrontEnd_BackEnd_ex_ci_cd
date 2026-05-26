@@ -1,6 +1,7 @@
 package com.coffee.entity;
 
 import com.coffee.constant.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -57,5 +58,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role ;
 
+    // LocalDate를 직렬화할때 사용하는 규칙(패턴) 설정
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate regdate ; // 등록 일자
 }
