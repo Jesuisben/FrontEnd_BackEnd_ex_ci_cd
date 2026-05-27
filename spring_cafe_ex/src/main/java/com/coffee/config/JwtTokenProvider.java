@@ -3,6 +3,8 @@ package com.coffee.config;
 import com.coffee.entity.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -11,20 +13,28 @@ import java.util.Map;
 
 @Component // bean 객체를 만들어서 관리 - 나중에 컨트롤러에서 편하게 불러다 쓸 수 있음
 public class JwtTokenProvider { // JWT 생성, 검증 기능 담당자 클래스
-    // 토큰을 위조하지 못하도록 도장을 찍을 때 사용할 백엔드만의 비밀번호(비밀키)
     // 노출시 해커가 마음대로 토큰 위조 가능
-    // 실무에서는 application.properties에 숨겨둠 (나중에 @Value로 설정해서 가져오기)
-    private final String SECRET_KEY =
-            "my-secret-key-my-secret-key-my-secret-key";
+    // 실무에서는 application.properties에 숨겨둠 (@Value로 설정해서 가져오기)
+    // 토큰을 위조하지 못하도록 도장을 찍을 때 사용할 백엔드만의 비밀번호(비밀키)
+
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    // 토큰 유효 기간 설정 (밀리초(ms) 단위)
+    @Value("${jwt.expiration}")
+    private long expiration; // 만료 1 시간
 
     // 우리가 지정한 문자열 SECRET_KEY를 JWT 라이브러리가 서명용 도장으로 인식할 수 있도록
     // 컴퓨터용 암호화 키 객체로 다듬어서 반환해 주는 내부 헬퍼 메서드
-    private Key getSigningKey(){ // 위조 방지를 위한 서명
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private Key signingKey;
+    @PostConstruct
+    protected void init() {
+        this.signingKey = Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
+    private Key getSigningKey() {
+        return signingKey; // 위조 방지를 위한 서명
     }
 
-    // 토큰 유효 기간 설정 (밀리초(ms) 단위)
-    private final long EXPIRATION = 1000 * 60 * 60 ; // 만료 1 시간
 
     // 1. 토큰(JWT) 생성 : createToken(Member member) 메소드
     // 회원 정보를 가지고 그에 해당하는 토큰 생성
@@ -33,7 +43,7 @@ public class JwtTokenProvider { // JWT 생성, 검증 기능 담당자 클래스
         return Jwts.builder()
                 .setSubject(member.getEmail()) // 토큰 주인 - sub 토큰 주제(Subject, 보통 사용자 ID)
                 .setIssuedAt(new Date()) // 토큰 발급 시간 - iat 발급 시간(Issued At)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION)) // 토큰 만료 시간 - exp 만료 시간(Expiration)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration)) // 토큰 만료 시간 - exp 만료 시간(Expiration)
                 // 비밀키 도장(getSigningKey())과 HS256이라는 암호화 알고리즘을 사용해서 토큰 맨 뒤에 절대 위조할 수 없는 전자 서명(Sign)을 각인
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 // 표준 클레임 말고 우리가 커스텀하게 넣고 싶은 정보(예: "role": "USER")를 Map 형태로 추가 주입
