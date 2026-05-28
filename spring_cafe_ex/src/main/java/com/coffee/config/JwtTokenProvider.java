@@ -47,7 +47,7 @@ public class JwtTokenProvider { // JWT 생성, 검증 기능 담당자 클래스
                 // 비밀키 도장(getSigningKey())과 HS256이라는 암호화 알고리즘을 사용해서 토큰 맨 뒤에 절대 위조할 수 없는 전자 서명(Sign)을 각인
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 // 표준 클레임 말고 우리가 커스텀하게 넣고 싶은 정보(예: "role": "USER")를 Map 형태로 추가 주입
-                .setClaims(Map.of("role", member.getRole().name())) // 권한 정보
+                .claim("role", member.getRole().name()) // 권한 정보
                 // 이 모든 정보를 압축하여 점(.) 두 개로 연결된 그 유명한 JWT 긴 문자열(eyJhbGci...)을 완성
                 .compact(); // 최종 문자열 생성하기
     }

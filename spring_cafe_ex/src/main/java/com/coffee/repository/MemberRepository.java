@@ -22,8 +22,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 // DB를 조작할 수 있게 해주는 역할
 // 이 자바 언어는 요청하는 곳인 서비스(Service)에 작성함
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    // 이메일을 사용하여 회원 정보를 조회하는 추상 메소드
-    // 인터페이스여서 만들어 놓기만 하고 Spring Data JPA가 자동으로 구체화 해줌
+    // 이메일을 사용하여 회원 정보를 조회하는 쿼리 메소드
+    // 인터페이스여서 만들어 놓기만 하고 Spring Data JPA가 자동으로 구체화 해서 실행해줌
     // findBy+컬럼명 = select(SQL) / Get 매핑 / read(CRUD)
     // 반환타입이 Member인 findByEmail이 메소드명인 메소드
     Member findByEmail (String email);
