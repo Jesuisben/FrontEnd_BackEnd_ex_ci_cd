@@ -17,7 +17,7 @@ function App({ user }: ProductInsertFormProps) {
 
     const comment = '상품 등록'; // 제목으로도 쓰고 버튼이름으로도 쓸거같아서 변수로 만든 것
 
-    const initial_value = {
+    const initial_value = { // 스프링의 Entity보고 작성 (Long id / LocalDate inputdate는 스프링이 자동 생성함)
         name: '',
         price: '',
         category: '-',
@@ -49,9 +49,15 @@ function App({ user }: ProductInsertFormProps) {
     // HTMLInputElement 한 줄 입력상자
     // HTMLTextAreaElement 멀티라인 입력상자
     const ControlChange = (
+        // HTMLInputElement : HTML부분의 input(jsx의 Control)의 요소 (한 줄 입력)
+        // HTMLTextAreaElement : HTML부분의 textarea(jsx의 Control)의 요소 (여러 줄 입력)
+        // HTMLSelectElement : HTML부분의 select(jsx의 Select)의 요소 (콤보박스 선택 입력)
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         // event.target : 해당 이벤트를 발생시킨 요소를 의미
+        // event.target 객체가 가진 원소중 name과 value인 키의 값만 골라서 변수로 지정함
+        // event.target.name : Form.Control의 속성인 name의 값
+        // event.target.value : 사용자가 입력한 값
         const { name, value } = event.target;
 
         // Product가 객체여서 중괄호 사용
@@ -65,9 +71,13 @@ function App({ user }: ProductInsertFormProps) {
     const FileSelect = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
+        // event.target 객체가 가진 원소중 name과 files인 키의 값만 골라서 변수로 지정함
+        // files가 첨부 파일(이미지)의 value라고 생각하면 됨
         const { name, files } = event.target;
 
         // 입력한 값이 파일(이미지)이 아닐때의 조건식과 동작
+        // !files : 입력한 값이 파일이 아닐때 값이 비어있음
+        // files.length === 0 : 값 자체는 존재하는데 기본값인 0일때 - 사실상 존재하지 않음
         if (!files || files.length === 0) {
             alert('이미지 파일을 선택해 주셔야 합니다.');
             return;
@@ -75,31 +85,31 @@ function App({ user }: ProductInsertFormProps) {
         // 1) JS에서 만약 체크 박스가 있다고 할 때 2개를 체크하면 배열이 만들어짐
         // 2) 이미지 선택 양식을 의미하는 배열
         // 3) type이 file인 이미지는 선택하면 1개여도 객체 데이터 덩어리여서 무조건 배열로 생성이 됨
+        // 파일을 선택하면 배열의 앞 부분에 추가됨
         // 4) files[0] : 이미지를 여러개 선택해도 우리는 이미지 1개가 필요해서
         // 제일 첫번째 이미지 오직 한개!를 선택하기 위해서
         // files배열의 인덱스 0번인 files[0]를 file에 넣은 것
         const file = files[0]; // type="file"로 작성한 첫번째 항목
 
-        // FileReader : 이미지(바이트) 파일을 읽어서 JS가 이해할 수 있도록 변경해주는 번역기
+        // FileReader : 이미지 파일(바이너리 바이트 데이터)을 읽어 들여서
+        // JS가 알아듣게 텍스트 문장으로 변환해 주는 번역기
         const reader = new FileReader();
 
-        // 해당 이미지는 Base64 인코딩 문자열 형식으로 state에 저장합니다.
-        // 이미지를 밑에 텍스트로 번역해줌
+        // readAsDataURL() : 해당 이미지를 Base64 인코딩 문자열 형식으로 변환해서 reader 객체에 저장함
         // 사용 예시 : data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA...
         // 스프링에서 이 텍스트를 받고나서
         // 필요한 부분은 ,뒤에 있는 iVBORw0KGgoAAAANSUhEUgAAAAUA...이 부분이여서
         // String 클래스의 substring으로 추출해와야함
-
         reader.readAsDataURL(file);
 
+        // readAsDataURL()은 시간이 걸리는 비동기 작업이라 끝났을때 알려주는 함수가 필요함
         // JS가 이해할 수 있도록 변경해주는 과정이 다 끝날을때 하는 동작을 지정하는 함수
         reader.onloadend = () => {
             // result안에는 data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA...
             // 이 값이 들어 있음
             const result = reader.result;
 
-            // [name]는 name 변수의 값, 즉 image의 값을 바꾸겠습니다.
-            // name이라고 적으면, 무조건 상품 이름(name)이 계속 변경됩니다.
+            // [name]는 name 변수의 값(image)
             setProduct({ ...product, [name]: result });
         }
     };
@@ -127,6 +137,8 @@ function App({ user }: ProductInsertFormProps) {
             alert('상품 등록되었습니다.');
 
             // 초기화 하기
+            // 강제로 '/product/list'로 이동해서 초기화하지 않아도 되지만
+            // 뒤로가기 버튼을 눌렀을때 입력했던 데이터가 남아있으니까 초기화 함
             setProduct(initial_value);
             setErrors(initialErrors);
 
@@ -227,7 +239,7 @@ function App({ user }: ProductInsertFormProps) {
                     <Form.Label column sm={2}>
                         카테고리
                     </Form.Label>
-                    <Col sm={10}> {/* Form.Control은 HTML의 form의 input같은 것 */}
+                    <Col sm={10}> {/* Form.Select는 HTML의 form의 select같은 것 */}
                         <Form.Select
 
                             // 정확히 말하자면 name 속성이 아니고 id속성임
