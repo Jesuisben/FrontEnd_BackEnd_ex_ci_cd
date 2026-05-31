@@ -141,6 +141,7 @@ public class ProductController {
         }
     }
 
+    // 상품 수정 페이지 get 방식
     @PutMapping("/update/{id}")
     public ResponseEntity<?> putUpdate(@PathVariable Long id,
                                        @Valid @RequestBody Product updatedProduct,
@@ -187,6 +188,17 @@ public class ProductController {
         }
     }
 
+    // 상품 상세 페이지 get매핑 요청에 대한 응답을 위한 코드
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<Product> detail(@PathVariable Long id){
+        // Optional 타입인 product를 다시 Product 타입으로 선언
+        Product product = productService.getProductById(id) ;
 
+        if (product == null){ // product가 존재하지 않으면 오류코드를 만들어서 프론트에 응답함
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }else{ // 정상적인 데이터를 가진 product라면 프론트에 오류 없다는 상태 코드와 함께 응답함
+            return ResponseEntity.ok(product);
+        }
+    }
 
 }

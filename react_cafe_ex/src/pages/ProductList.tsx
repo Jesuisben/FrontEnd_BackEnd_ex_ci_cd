@@ -109,6 +109,7 @@ function App({ user }: ProductProps) { // 프롭스 주입
             {/* 상품 등록을 위한 <Link>를 추가합니다. */}
             <Link to={`/product/insert`}>
                 {/* 수정, 삭제를 위한 <Button>을 추가합니다. */}
+                {/* 조건 && (HTML) 문법은 "조건이 맞을 때만 우측의 HTML을 보여달라"는 뜻 */}
                 {user?.role === 'ADMIN' && (
                     <Button variant="primary" className="mb-3">
                         상품 등록
@@ -124,7 +125,9 @@ function App({ user }: ProductProps) { // 프롭스 주입
                 {/* products는 상품 배열, item는 상품 1개를 의미 */}
                 {products.map((item) => ( // 자바의 확장 for문과 같은 리액트 문법
                     <Col key={item.id} md={4} className="mb-4">
-                        <Card className="h-100" style={{ cursor: 'pointer' }}>
+                        <Card className="h-100"
+                            onClick={() => navigate(`/product/detail/${item.id}`)} // 상세보기로 이동하기 위한 속성 추가
+                            style={{ cursor: 'pointer' }}>
                             <Card.Img
                                 variant="top"
                                 src={`${API_BASE_URL}/images/${item.image}`}

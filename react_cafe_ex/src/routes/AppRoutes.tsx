@@ -10,6 +10,7 @@ import LoginPage from './../pages/LoginPage';
 import ProductList from './../pages/ProductList';
 import ProductInsertForm from './../pages/ProductInsertForm';
 import ProductUpdateForm from './../pages/ProductUpdateForm';
+import ProductDetail from './../pages/ProductDetail';
 
 import type { User } from "../types/User";
 
@@ -34,6 +35,7 @@ function App({ user, handleLoginSuccess }: AppProps) {
       하는 것처럼 여기서 :기호도 id가 가변적인 변수라는 것을 의미하는 기호임
       실제로 주소창에는 :이 기호가 사라지고 순수한 id값만 오게됨 */}
       <Route path='/product/update/:id' element={<ProductUpdateForm user={user} />} />
+      <Route path='/product/detail/:id' element={<ProductDetail user={user} />} />
 
     </Routes>
   );

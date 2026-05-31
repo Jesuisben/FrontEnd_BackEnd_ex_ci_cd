@@ -1,6 +1,6 @@
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 import type { User } from "../types/User";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import customAxios from './../api/axiosInstance';
@@ -14,6 +14,15 @@ interface ProductInsertFormProps {
 
 function App({ user }: ProductInsertFormProps) {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // useEffect 안에서도 ?. 문법으로 깔끔하게 줄일 수 있습니다.
+        if (user?.role !== 'ADMIN') {
+            alert('관리자만 접근할 수 있는 페이지입니다.');
+            navigate(user ? '/' : '/member/login'); // 로그인 여부에 따라 이동지 분기
+            return;
+        }
+    }, [user, navigate]);
 
     const comment = '상품 등록'; // 제목으로도 쓰고 버튼이름으로도 쓸거같아서 변수로 만든 것
 
