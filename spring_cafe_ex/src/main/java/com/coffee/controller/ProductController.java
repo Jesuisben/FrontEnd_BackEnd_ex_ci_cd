@@ -141,7 +141,7 @@ public class ProductController {
         }
     }
 
-    // 상품 수정 페이지 get 방식
+    // 상품 수정 페이지 put 방식
     @PutMapping("/update/{id}")
     public ResponseEntity<?> putUpdate(@PathVariable Long id,
                                        @Valid @RequestBody Product updatedProduct,
