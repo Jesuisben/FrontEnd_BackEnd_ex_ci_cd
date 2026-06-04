@@ -142,7 +142,7 @@ function App({ user }: ProductProps) { // 프롭스 주입
                                                 <Card.Title>{item.name}({item.id})</Card.Title>
                                             </td>
                                             <td rowSpan={2} style={{ padding: '4px', border: 'none', textAlign: 'center', verticalAlign: 'middle' }}>
-                                                {makeAdminButtons(item, user, navigate)}
+                                                {makeAdminButtons(item, user, navigate)}    
                                             </td>
                                         </tr>
                                         <tr>
