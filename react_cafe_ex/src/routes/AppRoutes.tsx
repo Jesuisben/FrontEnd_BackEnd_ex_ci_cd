@@ -22,7 +22,9 @@ interface AppProps { // App.tsx에서 온 프롭스 - LoginPage.tsx에 전달만
 function App({ user, handleLoginSuccess }: AppProps) {
   return (
     <Routes>
+      {/* url에 /fruit 요청이 오면 컴포넌트로 들어가진 FruitOne 파일을 사용함 */}
       <Route path="/fruit" element={<FruitOne />} />
+      {/* url에 /fruit/list 요청이 오면 컴포넌트로 들어가진 FruitList 파일을 사용함 */}
       <Route path="/fruit/list" element={<FruitList />} />
 
       <Route path="/" element={<HomePage />} />
