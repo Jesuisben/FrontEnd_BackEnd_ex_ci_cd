@@ -44,6 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 토큰의 유효성을 검증한다 (validateToken) (만료여부, 위조여부)
             if(jwtTokenProvider.validateToken(token)){
                 // 토큰에서 사용자 이메일을 추출한다 (getEmail)
+                // getEmail() : 사실상 email을 가져오는게 아니고 토큰의 claim에서 subject(식별자)를 가져옴
+                // 그냥 변수명이랑 메소드명이 email, getEmail임 (실제로 식별자에 email 값을 넣긴했지만)
                 String email = jwtTokenProvider.getEmail(token); // 회원의 이메일 정보 가져오기
                 Claims claims = jwtTokenProvider.getClaims(token); // 토큰 해체해서 객체에 넣기
 

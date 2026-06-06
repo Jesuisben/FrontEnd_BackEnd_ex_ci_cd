@@ -64,6 +64,13 @@ function App({ appName, user, handleLogout }: MenuItemsProps) {
             {/* 매개변수로 받은 프롭 사용하기 */}
             <Navbar.Brand href='/'>{appName}</Navbar.Brand>
             <Nav className="me-auto">
+               {/* 사용자 이름 표시 */}
+               {user && (
+                  <Nav.Item className="text-white fw-bold fs-5 me-3 d-flex align-items-center">
+                     {user.name}님
+                  </Nav.Item>
+               )}
+
                {/* 하이퍼링크 : Nav.Link는 다른 페이지로 이동할 때 사용됩니다.  */}
                <Nav.Link onClick={() => navigate(`/product/list`)}>상품 보기</Nav.Link>
 

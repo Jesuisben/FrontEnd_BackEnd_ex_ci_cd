@@ -6,11 +6,12 @@
 
 import customAxios from "./../api/axiosInstance";
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_BASE_URL } from "../config/config";
 import type { Product } from "../types/Product";
 import type { User } from "../types/User";
+import axios from "axios";
 
 interface AppProps { // 사용자 권한을 나타내려고 쓰는 프롭스 (customAxios와 세트 느낌)
     user: User | null
@@ -25,6 +26,19 @@ function App({ user }: AppProps) {
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
+
+    // 수량 state변수
+    // (주의 : useEffect() 코딩 이전에 작성) : Hook은 항상 컴포넌트 최상단에서 같은 순서로 호출되어야 함
+    const [quantity, setQuantity] = useState(0);
+
+    // 2) QuantityChange 이벤트 핸들러 함수(주의 : useEffect() 코딩 이전에 작성)
+    const QuantityChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => { // parseInt : int 타입으로 변환하는 함수
+        const newValue = parseInt(event.target.value);
+        setQuantity(newValue);
+    };
+
 
     // 파라미터 id가 갱신이 되면 화면을 다시 rendering 시킵니다.
     useEffect(() => {
@@ -68,6 +82,8 @@ function App({ user }: AppProps) {
         );
     }
 
+
+
     // 상품에 대한 정보가 없는 경우를 대비한 코딩입니다.
     if (!product) {
         return (
@@ -77,6 +93,54 @@ function App({ user }: AppProps) {
                 </h3>
             </Container>
         );
+    }
+
+    // addToCart 함수를 작성
+    const addToCart = async () => {
+        if (!user) {
+            alert('로그인이 필요합니다.');
+            navigate('/member/login');
+            return;
+        }
+
+        if (!product) return;
+
+        if (quantity < 1) { // 최소수량 경고 문구 (min으로 설정해도 직접 숫자를 입력하면 0이 입력이 됨)
+            alert(`구매 수량은 1개 이상이어야 합니다.`);
+            return;
+        }
+        //alert(`${product.name} ${quantity} 개를 장바구니에 담기`);
+
+        // memberId: user.id
+        try {
+            const parameters = {
+                // 백엔드에서 일처리를 하는데 꼭 필요한 데이터를 파라미터로 보냄
+                // 백엔드에서는 이 파라미터와 "이름"이 똑같은 맴버변수를 가진 dto를 만들어야 함
+                // memberId: user.id : 누가 카트에 추가했는지는 보내지 않음
+                // 이것은 백엔드에서 dto로 설정은 해놓고 controller에서 받을때는 dto의 변수의 값이
+                // 프론트엔드에서 받은 값이 없어서 null이지만 데이터 베이스에 넣을때 service를 거치면서
+                // 채워지게 됨 (따라서 백엔드의 dto에는 memberId 변수가 있기는 함)
+                productId: product.id,
+                quantity: quantity
+            };
+
+            const url = `/cart/insert`;
+            const response = await customAxios.post(url, parameters);
+
+
+            alert(response.data);
+            navigate('/product/list'); // 상품 목록 페이지로 이동
+
+        } catch (error) {
+            console.log('오류 발생 : ' + error);
+
+            if (axios.isAxiosError(error)) {
+                console.log(error.response?.data);
+                alert('장바구니 추가 실패');
+            } else {
+                console.log('예상치 못한 오류', error);
+            }
+        }
     }
 
     return (
@@ -123,11 +187,50 @@ function App({ user }: AppProps) {
                                 </tbody>
                             </Table>
 
+                            {/* 구매 수량 입력란 */}
+                            {/* as={Row}는 렌더링시 기본 값인 <div> 말고 Row로 렌더링하도록 해줌 */}
+                            <Form.Group as={Row} className="mb-3 align-items-center">
+                                <Col xs={3} className="text-center">
+                                    <strong>구매 수량</strong>
+                                </Col>
+                                <Col xs={5}>
+                                    {/* 구매 수량 최소 1이상으로 설정 / user 모드에 따라서 분기 */}
+                                    <Form.Control
+                                        type="number"
+                                        // 최솟값
+                                        min="1"
+                                        // 로그인이 되어있지 않으면 (!user) 비활성화됨
+                                        disabled={!user}
+                                        value={quantity}
+                                        onChange={QuantityChange}
+                                    />
+                                </Col>
+                            </Form.Group>
 
-                            {/* 버튼(이전 목록) */}
+
+                            {/* 버튼(이전 목록, 장바구니, 주문하기) */}
                             <div className="d-flex justify-content-center mt-3">
                                 <Button variant="primary" className="me-3 px-4" href="/product/list">
                                     이전 목록
+                                </Button>
+                                {/* 장바구니 버튼 */}
+                                <Button variant="success" className="me-3 px-4"
+                                    onClick={() => {
+                                        // 로그인 하지 않았을때 누르면 alert 후 로그인 페이지로 이동
+                                        if (!user) {
+                                            alert('로그인이 필요한 서비스입니다');
+                                            return navigate('/member/login');
+                                        } else { // 로그인 했을때는 addToCart() 함수 실행
+                                            addToCart();
+                                        }
+                                    }}
+                                >
+                                    장바구니
+                                </Button>
+                                <Button variant="danger" className="me-3 px-4"
+                                // onClick={`일단오류무시`}
+                                >
+                                    주문하기
                                 </Button>
                             </div>
                         </Card.Body>

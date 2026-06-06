@@ -31,6 +31,8 @@ axiosInstance.interceptors.request.use(
             // config.headers 공간 자체가 없더라도 에러나지 않게  {}라는 빈공간이라도 만들어두기
             config.headers = config.headers || {};
             // Bearer 단어 대소문자 주의 바람 + token 사이에 한칸 공백 주의
+            // headers에 Authorization라는 이름의 key를 만들고 그 key의 value에
+            // `Bearer ${token}` 이 값을 넣음
             // Spring Security에서 확인할때 Bearer 뒤에 있는 token을 보고 허가를 해줌
             config.headers.Authorization = `Bearer ${token}`;
         }
