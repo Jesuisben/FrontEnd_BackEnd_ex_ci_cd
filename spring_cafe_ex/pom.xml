@@ -110,6 +110,8 @@
 	</dependencies>
 
 	<build>
+		<!-- 빌드한 파일명을 설정함(cafe.jar) / 기본값은 (cafe-0.0.1-SNAPSHOT.jar) 같은 거임 -->
+		<finalName>cafe</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
