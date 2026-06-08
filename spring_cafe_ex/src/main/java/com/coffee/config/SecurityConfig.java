@@ -51,7 +51,8 @@ public class SecurityConfig {
                 "/js/**",
                 "/member/signup",
                 "/member/login",
-                "/product/list"
+                "/product/list",
+                "/fruit01/**"
         };
 
         // Spring Security 기본 정책 : POST / PUT / DELETE 요청은 CSRF 토큰 필요함
