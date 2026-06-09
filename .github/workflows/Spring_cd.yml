@@ -1,9 +1,9 @@
-name: CD - Deploy to EC2
+name: Spring CD - Deploy to EC2
 
-# CI 워크플로우("CI - Build and Push")가 성공적으로 끝나면 자동 실행
+# CI 워크플로우("Spring CI - Build and Push")가 성공적으로 끝나면 자동 실행
 on:
   workflow_run:
-    workflows: ["CI - Build and Push"]
+    workflows: ["Spring CI - Build and Push"]
     types:
       - completed
 

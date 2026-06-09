@@ -1,10 +1,13 @@
-name: CI - Build and Push
+name: Spring CI - Build and Push
 
-# master에 push되면 실행
+# master에 push되고, spring_cafe_ex 폴더가 바뀔 때만 실행
 on:
   push:
     branches:
       - master
+    paths:
+      - 'spring_cafe_ex/**'
+      - '.github/workflows/Spring_ci.yml'
 
 jobs:
   build:
@@ -27,7 +30,7 @@ jobs:
 
       # 4. 백엔드 폴더(spring_cafe_ex)의 Dockerfile로 이미지 빌드
       - name: Build Docker Image
-        run: docker build -t "${{ secrets.DOCKER_IMAGE }}" -f ./spring_cafe_ex/SpringDockerFile ./spring_cafe_ex
+        run: docker build -t "${{ secrets.DOCKER_IMAGE }}" -f ./spring_cafe_ex/SpringDockerfile ./spring_cafe_ex
 
       # 5. Docker Hub에 push
       - name: Push Docker Image
