@@ -18,9 +18,12 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // 리액트의 포트 번호를 여기에 작성
-        configuration.setAllowedOrigins(List.of(
+        // 도메인 주소로 수정
+        configuration.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
-                "http://127.0.0.1:5173"
+                "http://127.0.0.1:5173",
+                "https://jesuisben.store",
+                "https://*.jesuisben.store"
         ));
 
         // 허용 HTTP 메소드
