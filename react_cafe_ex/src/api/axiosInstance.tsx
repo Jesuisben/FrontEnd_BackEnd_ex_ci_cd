@@ -6,11 +6,10 @@
 // 전체 과정 : 토큰확인 - 토큰이 없거나 올바르지 않은 토큰일 경우 삭제 후 로그인 페이지로 보내서 새로운 토큰 생성 유도
 
 import axios from "axios";
-import { API_BASE_URL } from "../config/config";
 
 // withCredentials: true 항목은 세션 방식 설정이므로 jwt를 사용하면 삭제하도록 합니다.
 const axiosInstance = axios.create({
-    baseURL: API_BASE_URL
+    baseURL: ""
 });
 
 // 인터셉터(interceptor) : 요청(Request)이나 응답(Response)을 가로 채서 공통 로직을 처리하는 기능입니다.

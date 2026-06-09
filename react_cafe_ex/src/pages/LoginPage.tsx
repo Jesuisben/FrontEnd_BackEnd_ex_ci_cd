@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Alert, Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
-import axios from "../api/axiosInstance.tsx";
+import customAxios from "../api/axiosInstance.tsx";
 import type { LoginResponse, User } from "../types/User";
+import { API_BASE_URL } from "../config/config.tsx";
 
 interface Props {
     // App.tsx -> AppRoutes.tsx를 거쳐온 프롭스(정보가 들어오면 App.tsx에 데이터를 보내야함)
@@ -28,7 +29,7 @@ function App({ onLogin }: Props) { // 프롭스를 매개변수에 넣어서 사
         console.log('로그인 시도중입니다.');
 
         try {
-            const url = '/member/login';
+            const url = `${API_BASE_URL}/member/login`;
             const params = { email, password }; // 파라미터
             const config = {
                 headers: { // 헤더에 MIME type 적어서 요청
@@ -36,7 +37,7 @@ function App({ onLogin }: Props) { // 프롭스를 매개변수에 넣어서 사
                 }
             };
             // 요청해서 가져올 데이터를 LoginResponse 형식으로 요청함
-            const response = await axios.post<LoginResponse>(url, params, config);
+            const response = await customAxios.post<LoginResponse>(url, params, config);
 
             console.log('응답 데이터 : \n' + response.data);
 
