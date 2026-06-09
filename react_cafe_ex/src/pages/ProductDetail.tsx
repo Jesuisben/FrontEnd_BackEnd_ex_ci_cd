@@ -8,7 +8,6 @@ import customAxios from "./../api/axiosInstance";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { API_BASE_URL } from "../config/config";
 import type { Product } from "../types/Product";
 import type { User } from "../types/User";
 import axios from "axios";
@@ -151,7 +150,9 @@ function App({ user }: AppProps) {
                     <Col md={4}>
                         <Card.Img
                             variant="top"
-                            src={`${API_BASE_URL}/images/${product.image}`}
+                            // src가 S3 저장소된 이미지로 바뀌면서 코드를 바꿈
+                            // 원래 src={`${API_BASE_URL}/images/${product.image}`}
+                            src={product.image}
                             alt={`${product.name}`}
                             style={{ width: '100%', height: '400px' }}
                         />

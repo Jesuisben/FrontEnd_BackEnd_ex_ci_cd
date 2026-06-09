@@ -1,3 +1,4 @@
+/* // 이제 이미지도 로컬에서 받아오는게 아니고 S3로 받아오는 거라서 사실상 파일 자체를 삭제해도됨
 package com.coffee.config;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -9,17 +10,31 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration // 설정용 파일 어노테이션
 // 2) WebMvcConfigurer를 상속받기
 public class WebConfig implements WebMvcConfigurer {
-    /*@Override // 3) addCorsMappings 메소드 오버라이딩하기
+    */
+/*@Override // 3) addCorsMappings 메소드 오버라이딩하기
     public void addCorsMappings(CorsRegistry registry) {
         // 3000번 포트에서 GET부터 PATCH까지의 열거한 요청들을 모두 수락하겠습니다.
-        registry.addMapping("/**") *//* 모든 경로 허용  *//* // 모든 URL 허용
-                *//* react 포트 *//*
+        registry.addMapping("/**") *//*
+*/
+/* 모든 경로 허용  *//*
+*/
+/* // 모든 URL 허용
+                *//*
+*/
+/* react 포트 *//*
+*/
+/*
                 .allowedOrigins("http://localhost:5173", "http://localhost:3000")
-                *//* 허용할 메핑 *//*
+                *//*
+*/
+/* 허용할 메핑 *//*
+*/
+/*
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 // 쿠키 전송 허용
                 .allowCredentials(true) ;
-    }*/
+    }*//*
+
 
     // 이미지 가져오는 법
     // @Value는 값을 자바 변수로 가져오는 어노테이션 / 가져오는 경로는 기본적으로 설정파일 (application.properties)
@@ -46,7 +61,8 @@ public class WebConfig implements WebMvcConfigurer {
                 // @Value 어노테이션에 의해 uploadPath라는 변수를 사용할 수 있음
                 .addResourceLocations(uploadPath);
 
-        /* 프로그램 진행 순서 (중요!!!)
+        */
+/* 프로그램 진행 순서 (중요!!!)
         1) <img src="/images/latte.jpg">라는 코드를 실행
         2) 브라우저: "스프링 서버야, /images/latte.jpg 파일 좀 줘!
         3) 스프링: "잠깐만, 내 등록 대장(registry)을 확인해 볼게.
@@ -54,6 +70,7 @@ public class WebConfig implements WebMvcConfigurer {
         4) 서버 시스템: "알겠어. 실제 위치인 C:/shop/images/
         폴더에 가서 latte.jpg가 있는지 찾아볼게."
         5) 결과: 파일을 찾아서 브라우저에 이미지를 띄워줍니다.
-        */
+        *//*
+
     }
-}
+}*/

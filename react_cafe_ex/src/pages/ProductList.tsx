@@ -4,7 +4,6 @@ import type { Product } from "../types/Product";
 
 import customAxios from './../api/axiosInstance';
 
-import { API_BASE_URL } from "../config/config";
 import type { User } from "../types/User";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -130,7 +129,9 @@ function App({ user }: ProductProps) { // 프롭스 주입
                             style={{ cursor: 'pointer' }}>
                             <Card.Img
                                 variant="top"
-                                src={`${API_BASE_URL}/images/${item.image}`}
+                                // src가 S3 저장소된 이미지로 바뀌면서 코드를 바꿈
+                                // src={`${API_BASE_URL}/images/${item.image}`}
+                                src={item.image}
                                 alt={item.name}
                                 style={{ width: '100%', height: '200px' }}
                             />
