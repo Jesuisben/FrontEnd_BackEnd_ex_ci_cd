@@ -54,7 +54,7 @@ function App() {
             <Table hover style={{ margin: '20px' }}>
                 <tbody>
                     <tr>
-                        <td>아이디</td>
+                        <td>아이디 (test) 용</td>
 
                         {/* optional chaining : fruit가 null → 아무것도 안 나옴(undefined 반환), fruit가 존재 → id 출력 */}
                         {/* JSX영역에 JS의 변수, 객체, 함수등을 사용할때 {}안에 넣고 JS와 같은 문법으로 사용하면 됨 */}
