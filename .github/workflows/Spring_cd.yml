@@ -25,7 +25,7 @@ jobs:
             echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             # 2. 최신 이미지 받기
-            sudo docker pull "${{ secrets.DOCKER_IMAGE }}"
+            sudo docker pull "${{ secrets.BACKEND_IMAGE }}"
 
             # 3. 기존 백엔드 컨테이너 삭제 (없으면 그냥 넘어감)
             sudo docker rm -f backend-app || true
@@ -40,7 +40,7 @@ jobs:
               -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-              "${{ secrets.DOCKER_IMAGE }}"
+              "${{ secrets.BACKEND_IMAGE }}"
 
             # 5. 안 쓰는 옛날 이미지 정리
             sudo docker image prune -f

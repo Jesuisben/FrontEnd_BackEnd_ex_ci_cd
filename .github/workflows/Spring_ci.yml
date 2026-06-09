@@ -30,8 +30,8 @@ jobs:
 
       # 4. 백엔드 폴더(spring_cafe_ex)의 Dockerfile로 이미지 빌드
       - name: Build Docker Image
-        run: docker build -t "${{ secrets.DOCKER_IMAGE }}" -f ./spring_cafe_ex/SpringDockerfile ./spring_cafe_ex
+        run: docker build -t "${{ secrets.BACKEND_IMAGE }}" -f ./spring_cafe_ex/SpringDockerfile ./spring_cafe_ex
 
       # 5. Docker Hub에 push
       - name: Push Docker Image
-        run: docker push "${{ secrets.DOCKER_IMAGE }}"
+        run: docker push "${{ secrets.BACKEND_IMAGE }}"
