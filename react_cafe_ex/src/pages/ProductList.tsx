@@ -19,7 +19,7 @@ function App({ user }: ProductProps) { // 프롭스 주입
     const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        const url = `${API_BASE_URL}/product/list`;
+        const url = '/product/list';
         customAxios.get(url)
             .then((response) => {
                 console.log('응답 받은 데이터');
@@ -71,8 +71,8 @@ function App({ user }: ProductProps) { // 프롭스 주입
                         }
 
                         try { // 전체 배열에서 일부 데이터만 필터할 수 있음
-                            const url = `${API_BASE_URL}/product/delete/${item.id}`;
-                            await axios.delete(url); // 백엔드를 거치고 일처리를 해야해서 await 붙임
+                            const url = `/product/delete/${item.id}`;
+                            await customAxios.delete(url); // 백엔드를 거치고 일처리를 해야해서 await 붙임
                             alert(`'${item.name}' 상품이 삭제되었습니다.`)
 
                             // 상품을 갱신해주는 setter
@@ -142,7 +142,7 @@ function App({ user }: ProductProps) { // 프롭스 주입
                                                 <Card.Title>{item.name}({item.id})</Card.Title>
                                             </td>
                                             <td rowSpan={2} style={{ padding: '4px', border: 'none', textAlign: 'center', verticalAlign: 'middle' }}>
-                                                {makeAdminButtons(item, user, navigate)}    
+                                                {makeAdminButtons(item, user, navigate)}
                                             </td>
                                         </tr>
                                         <tr>

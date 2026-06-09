@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Fruit } from "../types/Fruit";
-import axios from "axios";
-import { API_BASE_URL } from "../config/config";
 import { Table } from "react-bootstrap";
+import customAxios from "../api/axiosInstance";
 
 
 function App() {
@@ -21,13 +20,13 @@ function App() {
     const fetchData = async () => {
       try { // 백엔드에 요청하는 내용 작성
         // 요청할 url 주소 / config.tsx에서 변수 가져와야해서 import 함
-        const url = `${API_BASE_URL}/fruit/list`;
+        const url = '/fruit/list';
 
         // await (async와 짝꿍) : async로 다음 코드로 원래는 넘어가지만 await 부분에서는
         // async의 결과가 나올때까지 기다리고 그 다음줄이 실행되게 함
         // axios의 get방식으로 메핑된 url에 가서 Fruit와 동일한 형식의 데이터의 값을 가져와서
         // response에 넣기
-        const response = await axios.get<Fruit[]>(url);
+        const response = await customAxios.get<Fruit[]>(url);
         setFruitList(response.data);
 
       } catch (error) {

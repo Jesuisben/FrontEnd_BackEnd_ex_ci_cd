@@ -48,7 +48,7 @@ function App({ user }: AppProps) {
             return;
         }
 
-        const url = `${API_BASE_URL}/product/detail/${id}`;
+        const url = `/product/detail/${id}`;
 
         // 백엔드에서 id에 해당하는 데이터를 가져옴
         customAxios
@@ -124,7 +124,7 @@ function App({ user }: AppProps) {
                 quantity: quantity
             };
 
-            const url = `/cart/insert`;
+            const url = '/cart/insert';
             const response = await customAxios.post(url, parameters);
 
 

@@ -4,7 +4,6 @@ import customAxios from './../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from "../config/config";
 // useParams 훅은 url에 들어 있는 동적 파라미터의 값을 챙길때 사용합니다.
 import { useParams } from "react-router-dom";
 import type { User } from '../types/User';
@@ -59,7 +58,7 @@ function App({ user }: AppProps) {
         }
 
         // role이 ADMIN이면
-        const url = `${API_BASE_URL}/product/update/${id}`;
+        const url = `/product/update/${id}`;
 
         // 데이터 베이스에 저장되어 수정을 하려는 id의 객체를 가져옴 (get)
         customAxios
@@ -135,7 +134,7 @@ function App({ user }: AppProps) {
 
         try {
             // 주의) 라우팅 규칙 때문에 ${id}를 제거하면 안됩니다.
-            const url = `${API_BASE_URL}/product/update/${id}`;
+            const url = `/product/update/${id}`;
 
             // Content-Type(Mime Type) : 문서의 종류가 어떠한 종류인지를 알려 주는 항목
             // 예시 : 'text/html', 'image/jpeg', 'application/json' 등등

@@ -1,10 +1,8 @@
-import axios from "axios"
-
 import { useEffect, useState } from "react";
-import { API_BASE_URL } from "../config/config";
 import { Table } from "react-bootstrap";
 
 import type { Fruit } from "../types/Fruit"
+import customAxios from "../api/axiosInstance";
 
 // axios 라이브러리를 이용하여 리액트에서 스프링으로 데이터를 요청함
 function App() {
@@ -23,7 +21,7 @@ function App() {
         const fetchResult = async () => {
             try { // 백엔드에 요청하는 내용 작성
                 // 요청할 url 주소 / config.tsx에서 변수 가져와야해서 import 함
-                const url = `${API_BASE_URL}/fruit`;
+                const url = '/fruit';
 
                 // 요청을 보낼때 인증 정보를 가진 쿠키도 같이 요청하기 위해 만든 변수
                 const config = { withCredentials: true };
@@ -37,7 +35,7 @@ function App() {
                 // async의 결과가 나올때까지 기다리고 그 다음줄이 실행되게 함
                 // axios의 get방식으로 메핑된 url에 가서 Fruit와 동일한 형식의 데이터의 값을 가져와서
                 // response에 넣기
-                const response = await axios.get<Fruit>(url, config);
+                const response = await customAxios.get<Fruit>(url, config);
 
                 // fruit라는 State변수에 스프링에서 가져온 데이터인 response의 데이터를 넣음
                 setFruit(response.data);

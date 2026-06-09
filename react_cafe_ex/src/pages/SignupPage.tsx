@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { Card, Container, Row, Form, Col, Button, Alert } from "react-bootstrap";
-import { API_BASE_URL } from "../config/config";
 import { useNavigate } from "react-router-dom";
+import customAxios from "../api/axiosInstance";
 
 function App() {
     // 회원 가입시 필요한 항목들을 state로 정의하기
@@ -39,13 +39,13 @@ function App() {
 
         try {
             // 요청을 보낼 주소 (${API_BASE_URL} = 스프링 - 백엔드 주소)
-            const url = `${API_BASE_URL}/member/signup`;
+            const url = '/member/signup';
             // 변수 url 주소인 백엔드에 보낼 데이터 덩어리
             const parameters = { name, email, password, address };
             // 백엔드와 통신시 쿠키나 세션 정보를 안전하게 공유하겠다는 설정
             const config = { withCredentials: true };
             // 변수 url 주소인 백엔드에 parameters들을 보내는데 post방식으로 보냄
-            const response = await axios.post(url, parameters, config);
+            const response = await customAxios.post(url, parameters, config);
 
             if (response.status === 200) { /* 스프링의 MemberController 파일 참조 */
                 alert('회원 가입 성공');

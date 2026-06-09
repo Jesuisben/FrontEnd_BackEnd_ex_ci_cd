@@ -6,7 +6,6 @@ import axios from "axios";
 import customAxios from './../api/axiosInstance';
 
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../config/config";
 
 interface ProductInsertFormProps {
     user: User | null;
@@ -133,7 +132,7 @@ function App({ user }: ProductInsertFormProps) {
         }
 
         try {
-            const url = `${API_BASE_URL}/product/insert`;
+            const url = '/product/insert';
             const config = {
                 headers: { 'Content-Type': 'application/json' }
             };

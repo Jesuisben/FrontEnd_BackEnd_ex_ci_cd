@@ -28,7 +28,7 @@ function App({ user }: AppProps) {
 
     const fetchCartProducts = async () => {
         try {
-            const url = `${API_BASE_URL}/cart/list`;
+            const url = '/cart/list';
             const response = await customAxios.get(url);
             console.log('카트 상품 조회 결과');
             console.log(response.data);
@@ -133,7 +133,7 @@ function App({ user }: AppProps) {
             // http://localhost:9000/cart/edit/100?quantity=10
             // 백엔드에서 @RequestParam을 사용해서 주소창에 ?quantity로 보내는 것임
             // @RequestBody로 하면 parameter로 객체 생성으로 보낼 수 있음
-            const url = `${API_BASE_URL}/cart/edit/${cartProductId}?${parameter}`;
+            const url = `/cart/edit/${cartProductId}?${parameter}`;
 
             // patch 동작은 전체가 아닌 일부 데이터를 변경하고자 할때 사용됨
             // 스프링의 WebConfig 클래스안의 addCorsMappings() 메소드를 참조하길 바람
@@ -168,7 +168,7 @@ function App({ user }: AppProps) {
 
         if (isConfirmed) {
             try {
-                const url = `${API_BASE_URL}/cart/delete/${cartProductId}`;
+                const url = `/cart/delete/${cartProductId}`;
                 const response = await customAxios.delete(url);
 
                 setCartProducts((previous) => {
